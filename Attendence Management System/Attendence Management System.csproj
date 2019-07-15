@@ -1751,6 +1751,7 @@
     <Content Include="Content\bootstrap-reboot.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="HTML_Pages\AdminPanel\Index.html" />
     <Content Include="HTML_Pages\AdminPanel\Login.html" />
     <Content Include="HTML_Pages\Home.html" />
     <Content Include="HTML_Pages\UserPanel\Index.html" />
