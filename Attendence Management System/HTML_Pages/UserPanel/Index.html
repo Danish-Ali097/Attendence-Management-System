@@ -22,18 +22,18 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="../Home.html">Home</a>
+                    <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
                 </li>
             </ul>
             <div class="btn-group mr-4" role="group" aria-label="Button group with nested dropdown">
-                <button type="button" class="btn btn-primary">Primary</button>
+                <button type="button" class="btn btn-primary"><span id="usrname"></span></button>
                 <div class="btn-group" role="group">
                     <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 36px, 0px); top: 0px; left: -100px; will-change: transform;">
-                        <a class="dropdown-item" href="#">Logout</a>
+                        <a class="dropdown-item" href="#" id="lgoutBtn">Logout</a>
                         <a class="dropdown-item" href="#">Edit Profile</a>
                     </div>
                 </div>
@@ -41,32 +41,125 @@
         </div>
     </nav>
     <div class="container">
+        <div id="msg" class="m-2" style="display:none;">
+
+        </div>
         <ol class="breadcrumb mt-3">
             <li class="breadcrumb-item text-primary">Date: <span class="text-dark" id="dispDate"></span> </li>
         </ol>
-        <button class="btn btn-primary">Mark Attendence</button>
-        <button class="btn btn-primary">Mark Leave</button>
-        <button class="btn btn-primary">View History</button>
+        <button class="btn btn-primary" id="attendBtn">Mark Attendence</button>
+        <button class="btn btn-primary" id="leaveBtn">Mark Leave</button>
+        <button class="btn btn-primary" id="historyBtn">View History</button>
         
-        <table>
-            <thead>
-
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
+        <div class="card w-100 mt-3">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title">History</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="output">
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <!--scripts-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
+        //variables
         var d = new Date;
+        var userData;
+        //init
         d.getDate();
         $(document).ready(function () {
             $("#dispDate").text(d);
+            getUser(localStorage.getItem("User"));
+            $("#attendBtn").click(function () {
+                var str = 'Status=Present&StudentId=' + localStorage.getItem("User");
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:64749/api/Attendences', 'true');
+                xhr.onload = function () {
+                    if (this.status == '200' || this.status == '201') {
+                        $("#msg").html("<div class='alert alert-info'> <i class='fa fa-info-circle'></i> Attendence Submitted</div>");
+                        $("#msg").fadeIn();
+                    } else
+                    {
+                        $("#msg").html("<div class='alert alert-danger'> <strong>Error!</strong> Attendence not Submitted</div>");
+                        $("#msg").fadeIn();
+                        console.log("error : " + this.status);
+                    }
+                }
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.send(str);
+            });
+            $("#leaveBtn").click(function () { });
+            $("#historyBtn").click(function () {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'http://localhost:64749/api/Attendences', 'true');
+                xhr.onload = function ()
+                {
+                    if (this.status == '200') {
+                        var txt;
+                        if (JSON.parse(this.responseText) != "") {
+                            var data = JSON.parse(this.responseText);
+                            console.log("response : "+data);
+                            for (var x in data) {
+                                txt += `<tr><td>${data[x].Status}</td><td>${data[x].Date}</td></tr>`;
+                            }
+                            $("#output").html(txt);
+                        } else {
+                            $("#output").html("<h1 class='text-muted'><i class='fa fa-frown'></i> Sorry, data not avaliable</h1>");
+                        }
+                    } else
+                    {
+                        console.log("error: " + this.status);
+                    }
+                }
+                xhr.send();
+            });
+            $("#lgoutBtn").click(function (e) {
+                e.preventDefault();
+                var xhr = new XMLHttpRequest();
+                var str = 'Id=' + userData.Id + '&Name=' + userData.Name + '&Email=' + userData.Email + '&Password=' + userData.Password + '&ImagePath=' + userData.ImagePath + '&LoginFlag=false';
+                console.log("data to encode in url : "+str)
+                xhr.open('PUT', 'http://localhost:64749/api/Students/' + userData.Id, 'true');
+                xhr.onload = function ()
+                {
+                    if (this.status == '204') {
+                        localStorage.removeItem('User');
+                        window.location.assign('http://localhost:64749/Html_Pages/UserPanel/Login.html');
+                    } else
+                    {
+                        console.log("error in logging out" + this.status);
+                    }
+                }
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.send(str);
+            });
         });
+        //function GET: user
+        function getUser(id) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://localhost:64749/api/Students/' + id, 'true');
+            xhr.onload = function () {
+                if (this.status == '200') {
+                    userData = JSON.parse(this.responseText);
+                    //console.log(userData);
+                    $("#usrname").text(userData.Name);
+                }
+            }
+            xhr.send();
+        }
+
     </script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="../../Scripts/bootstrap.min.js"></script>
     <script src="../../Scripts/bootstrap.bundle.min.js"></script>
 </body>

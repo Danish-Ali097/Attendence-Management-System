@@ -39,40 +39,69 @@
         </div>
     </nav>
     <div class="container">
+        <div id="msg" class="mt-2" style="display:none;">
+
+        </div>
         <div class="card" id="reg-form">
-            <div class="card-header">
+            <div class="card-header bg-primary text-white">
                 <h5 class="card-title">SignUp</h5>
             </div>
             <div class="card-body">
-                <form>
+                <form id="SignForm">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input class="form-control" name="name" type="text" />
+                        <input class="form-control" id="name" type="text" />
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input class="form-control" name="email" type="email" />
+                        <input class="form-control" id="email" type="email" />
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input class="form-control" name="password" type="password" />
+                        <input class="form-control" id="password" type="password" />
                     </div>
                     <div class="form-group">
                         <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="inputGroupFile02" accept="image/png,image/jpeg,image/jpg">
-                                <label class="custom-file-label" for="inputGroupFile02">Choose image</label>
+                                <input type="file" class="custom-file-input" id="File" accept="image/png,image/jpeg,image/jpg">
+                                <label class="custom-file-label" for="File">Choose image</label>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary">SignUp</button>
+                    <button class="btn btn-primary" id="sgnBtn">SignUp</button>
                 </form>
             </div>
         </div>
     </div>
     <!--scripts-->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>
     <script src="../../Scripts/bootstrap.min.js"></script>
     <script src="../../Scripts/bootstrap.bundle.min.js"></script>
+    <!--userScripts-->
+    <script>
+        $(document).ready(function () {
+            $("#SignForm").submit(function (e) { e.preventDefault(); })
+            $("#sgnBtn").click(function () {
+                var data = "Name=" + $("#name").val() + "&Email=" + $("#email").val() + "&Password=" + $("#password").val() + "&ImagePath=" + $("#File").val();
+                console.log(data);
+                var http = new XMLHttpRequest();
+                http.open('POST', 'http://localhost:64749/api/Students', 'true');
+                http.onload = function () {
+                    if (this.status == '201') {
+                        var txt = `<div class="alert alert-success"><strong>Success!</strong> Please login to continue..</div>`;
+                        $("#msg").html(txt);
+                        $("#msg").fadeIn();
+                    } else {
+                        var txt = `<div class="alert alert-danger"><strong>Error!</strong> Status : ${this.status} ${this.statusText}</div>`;
+                        $("#msg").html(txt);
+                        $("#msg").fadeIn();
+
+                    }
+                }
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                http.send(data);
+            });
+        });
+    </script>
 </body>
 </html>
