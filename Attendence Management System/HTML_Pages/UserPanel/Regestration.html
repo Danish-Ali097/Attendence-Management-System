@@ -79,10 +79,19 @@
     <script src="../../Scripts/bootstrap.bundle.min.js"></script>
     <!--userScripts-->
     <script>
+        var image64;
         $(document).ready(function () {
+            $("#File").change(function () {
+                var reader = new FileReader();
+                reader.readAsDataURL(document.getElementById('File').files[0]);
+                reader.onloadend = function (e)
+                {
+                    image64 = e.target.result;
+                }
+            });
             $("#SignForm").submit(function (e) { e.preventDefault(); })
             $("#sgnBtn").click(function () {
-                var data = "Name=" + $("#name").val() + "&Email=" + $("#email").val() + "&Password=" + $("#password").val() + "&ImagePath=" + $("#File").val();
+                var data = "Name=" + $("#name").val() + "&Email=" + $("#email").val() + "&Password=" + $("#password").val() + "&ImagePath=" + image64;
                 console.log(data);
                 var http = new XMLHttpRequest();
                 http.open('POST', 'http://localhost:64749/api/Students', 'true');

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -77,6 +78,13 @@ namespace Attendence_Management_System.Controllers.api
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+            if(student.ImagePath != null)
+            {
+                Console.WriteLine(student.ImagePath);
+                string filePath = @"~\App_Content\MyImage.jpg";
+                File.WriteAllBytes(filePath, Convert.FromBase64String(student.ImagePath));
+                student.ImagePath = filePath;
             }
 
             db.Students.Add(student);

@@ -36,27 +36,76 @@
         </div>
     </nav>
     <div class="container">
+        <div class="mt-4" id="msg" style="display:none;">
+
+        </div>
         <div class="card" id="reg-form">
-           
+
             <div class="card-body">
                 <h1 style="text-align:center; font-size:50px;"><i class="fa fa-user-cog"></i></h1>
-                <form>
+                <form id="lgnForm">
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" class="form-control" />
+                        <input type="email" id="email" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" name="password" class="form-control" />
+                        <input type="password" id="password" class="form-control" />
                     </div>
-                    <button class="btn btn-primary">Login</button>
+                    <button class="btn btn-primary" id="lgnBtn">Login</button>
                 </form>
             </div>
         </div>
     </div>
     <!--scripts-->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="../../Scripts/bootstrap.min.js"></script>
     <script src="../../Scripts/bootstrap.bundle.min.js"></script>
+    <!--user script-->
+    <script>
+        $(document).ready(function () {
+            $("#lgnForm").submit(function (e) { e.preventDefault(); })
+            $("#lgnBtn").click(function () {
+                var Data = { email: $("#email").val(), password: $("#password").val() };
+                console.log("eml : " + Data.email + "\nPsd : " + Data.password);
+                if (Data.email != "" && Data.password != "") {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', 'http://localhost:64749/api/Admins', 'true');
+                    xhr.onload = function () {
+                        if (this.status == '200') {
+                            var data = JSON.parse(this.responseText);
+                            console.log("data : "+data);
+                            if (data == '') {
+                                //console.log("no data existed!");
+                                var txt = `<div class="alert alert-warning"> <i class="i fa fa-info-circle"></i> Please enter Admin username and passsword </div>`;
+                                $("#msg").html(txt);
+                                $("#msg").fadeIn();
+                            }
+                            for (var x in data) {
+                                //console.log("data : "+data[x]);
+                                if (data[x].Email == Data.email && data[x].Password == Data.password) {
+                                    console.log("logged in");
+                                    localStorage.setItem("User", JSON.stringify(data.Id));
+                                    window.location.assign('http://localhost:64749/Html_Pages/AdminPanel/Index.html');
+                                } else {
+                                    var txt = `<div class="alert alert-danger"> <i class="i fa fa-info-circle"></i> Email / Password incorrect.. </div>`;
+                                    $("#msg").html(txt);
+                                    $("#msg").fadeIn();
+                                }
+                            }
+                        } else {
+                            console.log("error code : " + this.status);
+                        }
+                    }
+                    xhr.send();
+                } else {
+                    var txt = `<div class="alert alert-info"> <i class="i fa fa-info-circle"></i> please fill up all fields. </div>`;
+                    $("#msg").html(txt);
+                    $("#msg").fadeIn();
+                }
+                //localStorage.setItem("User", JSON.stringify(Data));
+            });
+        })
+    </script>
 </body>
 </html>

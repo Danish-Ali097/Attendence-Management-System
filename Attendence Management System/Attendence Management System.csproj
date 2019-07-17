@@ -1794,6 +1794,7 @@
     <Content Include="HTML_Pages\AdminPanel\Index.html" />
     <Content Include="HTML_Pages\AdminPanel\Login.html" />
     <Content Include="HTML_Pages\Home.html" />
+    <Content Include="HTML_Pages\UserPanel\EditProfile.html" />
     <Content Include="HTML_Pages\UserPanel\Index.html" />
     <Content Include="HTML_Pages\UserPanel\Login.html" />
     <Content Include="HTML_Pages\UserPanel\Regestration.html" />
@@ -1825,6 +1826,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Content\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>

@@ -34,7 +34,7 @@
                     <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 36px, 0px); top: 0px; left: -100px; will-change: transform;">
                         <a class="dropdown-item" href="#" id="lgoutBtn">Logout</a>
-                        <a class="dropdown-item" href="#">Edit Profile</a>
+                        <a class="dropdown-item" href="EditProfile.html">Edit Profile</a>
                     </div>
                 </div>
             </div>
@@ -99,21 +99,31 @@
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xhr.send(str);
             });
-            $("#leaveBtn").click(function () { });
+            $("#leaveBtn").click(function () {
+
+            });
             $("#historyBtn").click(function () {
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', 'http://localhost:64749/api/Attendences', 'true');
                 xhr.onload = function ()
                 {
                     if (this.status == '200') {
-                        var txt;
+                        var txt='';
                         if (JSON.parse(this.responseText) != "") {
                             var data = JSON.parse(this.responseText);
                             console.log("response : "+data);
                             for (var x in data) {
-                                txt += `<tr><td>${data[x].Status}</td><td>${data[x].Date}</td></tr>`;
+                                if (data[x].StudentId == localStorage.getItem("User")) {
+                                    txt += `<tr><td>${data[x].Status}</td><td>${data[x].Date}</td></tr>`;
+                                }
                             }
-                            $("#output").html(txt);
+                            
+                            console.log("data in : " + txt);
+                            if (txt == '') {
+                                $("#output").html("<h1 class='text-muted'><i class='fa fa-frown'></i> Sorry, data not avaliable</h1>");
+                            } else {
+                                $("#output").html(txt);
+                            }
                         } else {
                             $("#output").html("<h1 class='text-muted'><i class='fa fa-frown'></i> Sorry, data not avaliable</h1>");
                         }
