@@ -13,10 +13,10 @@ namespace Attendence_Management_System.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class AMSDbEntities : DbContext
+    public partial class AMSfinalDbEntities : DbContext
     {
-        public AMSDbEntities()
-            : base("name=AMSDbEntities")
+        public AMSfinalDbEntities()
+            : base("name=AMSfinalDbEntities")
         {
         }
     

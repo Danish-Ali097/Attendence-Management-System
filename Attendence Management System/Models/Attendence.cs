@@ -17,7 +17,8 @@ namespace Attendence_Management_System.Models
         public int Id { get; set; }
         public string Status { get; set; }
         public bool LeaveApproval { get; set; }
-        public System.DateTime Date { get; set; }
+        public string Date { get; set; }
         public int StudentId { get; set; }
+        public Nullable<int> noLeaves { get; set; }
     }
 }

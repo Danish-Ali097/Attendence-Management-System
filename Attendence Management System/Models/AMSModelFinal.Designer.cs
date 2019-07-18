@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Danish Ali\source\repos\Attendence Management System\Attendence Management System\Models\AMSModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Danish Ali\source\repos\Attendence Management System\Attendence Management System\Models\AMSModelFinal.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

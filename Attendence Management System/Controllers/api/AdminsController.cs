@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,7 +14,7 @@ namespace Attendence_Management_System.Controllers.api
 {
     public class AdminsController : ApiController
     {
-        private AMSDbEntities db = new AMSDbEntities();
+        private AMSfinalDbEntities db = new AMSfinalDbEntities();
 
         // GET: api/Admins
         public IQueryable<Admin> GetAdmins()

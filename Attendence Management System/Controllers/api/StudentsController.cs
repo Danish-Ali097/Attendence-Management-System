@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,7 +14,7 @@ namespace Attendence_Management_System.Controllers.api
 {
     public class StudentsController : ApiController
     {
-        private AMSDbEntities db = new AMSDbEntities();
+        private AMSfinalDbEntities db = new AMSfinalDbEntities();
 
         // GET: api/Students
         public IQueryable<Student> GetStudents()
@@ -80,11 +79,10 @@ namespace Attendence_Management_System.Controllers.api
                 return BadRequest(ModelState);
             }
             if(student.ImagePath != null)
+            { }
+            else
             {
-                Console.WriteLine(student.ImagePath);
-                string filePath = @"~\App_Content\MyImage.jpg";
-                File.WriteAllBytes(filePath, Convert.FromBase64String(student.ImagePath));
-                student.ImagePath = filePath;
+                student.ImagePath = @"~\App_Content\Images\Default.png";
             }
 
             db.Students.Add(student);

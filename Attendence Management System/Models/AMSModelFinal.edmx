@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AMSDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="AMSfinalDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Admins">
           <Key>
             <PropertyRef Name="Id" />
@@ -13,15 +13,16 @@
           <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
-        <EntityType Name="Attendence">
+        <EntityType Name="Attendences">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Status" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="LeaveApproval" Type="bit" Nullable="false" />
-          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Date" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="noLeaves" Type="int" />
         </EntityType>
         <EntityType Name="Students">
           <Key>
@@ -31,19 +32,19 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="ImagePath" Type="varchar" MaxLength="50" />
+          <Property Name="ImagePath" Type="varchar" MaxLength="80" />
           <Property Name="LoginFlag" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="AMSDbModelStoreContainer">
+        <EntityContainer Name="AMSfinalDbModelStoreContainer">
           <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Attendence" EntityType="Self.Attendence" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Attendences" EntityType="Self.Attendences" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="AMSDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="AMSfinalDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Admin">
           <Key>
             <PropertyRef Name="Id" />
@@ -59,8 +60,9 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LeaveApproval" Type="Boolean" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="noLeaves" Type="Int32" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
@@ -70,10 +72,10 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ImagePath" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ImagePath" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Name="LoginFlag" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="AMSDbEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="AMSfinalDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Admins" EntityType="Self.Admin" />
           <EntitySet Name="Attendences" EntityType="Self.Attendence" />
           <EntitySet Name="Students" EntityType="Self.Student" />
@@ -83,9 +85,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="AMSDbModelStoreContainer" CdmEntityContainer="AMSDbEntities">
+        <EntityContainerMapping StorageEntityContainer="AMSfinalDbModelStoreContainer" CdmEntityContainer="AMSfinalDbEntities">
           <EntitySetMapping Name="Admins">
-            <EntityTypeMapping TypeName="AMSDbModel.Admin">
+            <EntityTypeMapping TypeName="AMSfinalDbModel.Admin">
               <MappingFragment StoreEntitySet="Admins">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -94,18 +96,19 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Attendences">
-            <EntityTypeMapping TypeName="AMSDbModel.Attendence">
-              <MappingFragment StoreEntitySet="Attendence">
+            <EntityTypeMapping TypeName="AMSfinalDbModel.Attendence">
+              <MappingFragment StoreEntitySet="Attendences">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="LeaveApproval" ColumnName="LeaveApproval" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="noLeaves" ColumnName="noLeaves" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Students">
-            <EntityTypeMapping TypeName="AMSDbModel.Student">
+            <EntityTypeMapping TypeName="AMSfinalDbModel.Student">
               <MappingFragment StoreEntitySet="Students">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

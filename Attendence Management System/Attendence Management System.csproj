@@ -181,32 +181,33 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Admin.cs">
-      <DependentUpon>AMSModel.tt</DependentUpon>
+      <DependentUpon>AMSModelFinal.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AMSModel.Context.cs">
+    <Compile Include="Models\AMSModelFinal.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AMSModel.Context.tt</DependentUpon>
+      <DependentUpon>AMSModelFinal.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AMSModel.cs">
+    <Compile Include="Models\AMSModelFinal.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AMSModel.tt</DependentUpon>
+      <DependentUpon>AMSModelFinal.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AMSModel.Designer.cs">
+    <Compile Include="Models\AMSModelFinal.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AMSModel.edmx</DependentUpon>
+      <DependentUpon>AMSModelFinal.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Attendence.cs">
-      <DependentUpon>AMSModel.tt</DependentUpon>
+      <DependentUpon>AMSModelFinal.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Student.cs">
-      <DependentUpon>AMSModel.tt</DependentUpon>
+      <DependentUpon>AMSModelFinal.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Content\Images\Default.png" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -1791,6 +1792,7 @@
     <Content Include="Content\bootstrap-reboot.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="HTML_Pages\AdminPanel\Details.html" />
     <Content Include="HTML_Pages\AdminPanel\Index.html" />
     <Content Include="HTML_Pages\AdminPanel\Login.html" />
     <Content Include="HTML_Pages\Home.html" />
@@ -1798,20 +1800,21 @@
     <Content Include="HTML_Pages\UserPanel\Index.html" />
     <Content Include="HTML_Pages\UserPanel\Login.html" />
     <Content Include="HTML_Pages\UserPanel\Regestration.html" />
-    <Content Include="Models\AMSModel.Context.tt">
+    <Content Include="Models\AMSModelFinal.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AMSModel.edmx</DependentUpon>
-      <LastGenOutput>AMSModel.Context.cs</LastGenOutput>
+      <DependentUpon>AMSModelFinal.edmx</DependentUpon>
+      <LastGenOutput>AMSModelFinal.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\AMSModel.tt">
+    <Content Include="Models\AMSModelFinal.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AMSModel.edmx</DependentUpon>
-      <LastGenOutput>AMSModel.cs</LastGenOutput>
+      <DependentUpon>AMSModelFinal.edmx</DependentUpon>
+      <LastGenOutput>AMSModelFinal.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\StringDate_to_numberDate.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1826,7 +1829,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Content\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
@@ -1884,12 +1886,12 @@
     <Content Include="fonts\fontawesome-free-5.8.1-web\webfonts\fa-solid-900.ttf" />
     <Content Include="fonts\fontawesome-free-5.8.1-web\webfonts\fa-solid-900.woff" />
     <Content Include="fonts\fontawesome-free-5.8.1-web\webfonts\fa-solid-900.woff2" />
-    <EntityDeploy Include="Models\AMSModel.edmx">
+    <EntityDeploy Include="Models\AMSModelFinal.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AMSModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>AMSModelFinal.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\AMSModel.edmx.diagram">
-      <DependentUpon>AMSModel.edmx</DependentUpon>
+    <Content Include="Models\AMSModelFinal.edmx.diagram">
+      <DependentUpon>AMSModelFinal.edmx</DependentUpon>
     </Content>
     <None Include="packages.config" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />

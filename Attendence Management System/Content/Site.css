@@ -5,3 +5,8 @@
 #reg-form{
     margin:5% 10%;
 }
+.details {
+    border-right: 2px solid #2C3E50 !important;
+    box-shadow:rgb(128, 128, 128) 10px 10px inset !important;
+    width:100px!important;
+}

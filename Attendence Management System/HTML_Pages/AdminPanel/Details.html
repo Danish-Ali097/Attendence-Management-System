@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <!--boostrap css-->
+    <link href="../../Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../fonts/fontawesome-free-5.8.1-web/css/all.min.css" rel="stylesheet" />
+    <link href="../../Content/Site.css" rel="stylesheet" />
+    <title>Details | AdminPanel</title>
+</head>
+<body>
+    <div id="header">
+        <h1 class="text-primary"><i class="fa fa-clipboard-list"></i> Attendence Management System</h1>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#"><i class="fa fa-user-cog"></i> Admin Panel</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="Index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav mr-0">
+                <li class="nav-item">
+                    <a href="#" id="lgoutBtn" class="nav-link">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="card w-100 mt-4">
+            <img class="card-img-top" id="profileImg" src="#" alt="user profile" style="width:10%; height:auto;"/>
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title" id="title"></h5>
+            </div>
+            <div class="card-body" id="detail">
+
+            </div>
+        </div>
+    </div>
+    <!--scripts-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var flag = localStorage.getItem("Admin");
+            if (flag != "true")
+            {
+                window.location.assign("http://localhost:64749/Html_Pages/AdminPanel/Login.html");
+            }
+            getStdDetail( JSON.parse(localStorage.getItem("UserDetail")) );
+            $("#lgoutBtn").click(function () {
+                localStorage.removeItem("Admin");
+                window.location.assign("http://localhost:64749/Html_Pages/AdminPanel/Login.html");
+            });
+        });
+        function getStdDetail(id)
+        {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://localhost:64749/api/Students/'+id, 'true');
+            xhr.onload = function () {
+                if (this.status == '200') {
+                    var txt;
+                    var data = JSON.parse(this.responseText);
+                    $("#title").text(data.Name);
+                    $("#profileImg").attr("src", data.ImagePath);
+                    txt = ` <div class="row p-2">
+                                <h5 style="border-right: 5px solid #2C3E50; box-shadow:rgb(128, 128, 128) 2px 3px 10px !important; border-radius:5px; width:15%; padding:1.5% 0 0 2%;">Email</h5>
+                                <span style="margin:2% 20%;">${data.Email}</span>
+                            </div>
+                            <div class="row p-2">
+                                <h5 style="border-right: 5px solid #2C3E50; box-shadow:rgb(128, 128, 128) 2px 3px 10px !important; border-radius:5px; width:15%; padding:1.5% 0 0 2%;">Password</h5>
+                                <span style="margin:2% 20%;">${data.Password}</span>
+                            </div>
+                            <div class="row p-2">
+                                <h5 style="border-right: 5px solid #2C3E50; box-shadow:rgb(128, 128, 128) 2px 3px 10px !important; border-radius:5px; width:15%; padding:1.5% 0 0 2%;">Is loggedin</h5>
+                                <span style="margin:2% 20%;">${data.LoginFlag}</span>
+                            </div><hr/>`;
+                    $("#detail").append(txt);
+                    getAttendenceDetails(id);
+                } else {
+                    console.log("Error : " + this.status);
+                }
+            }
+            xhr.send();
+        }
+        function getAttendenceDetails(Sid)
+        {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://localhost:64749/api/Attendences', 'true');
+            xhr.onload = function ()
+            {
+                if (this.status == '200') {
+                    var data = JSON.parse(this.responseText);
+                    var txt = `<h5 style="border-right: 5px solid #2C3E50; box-shadow:rgb(128, 128, 128) 2px 3px 10px !important; border-radius:5px; width:20%; padding:1.5% 0 2% 2%;">Attendence Details</h5>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <td>Status</td><td>Date</td>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+                    var pcount = 0, acount = 0, lcount = 0;
+                    for (var x in data)
+                    {
+                        if (data[x].StudentId == Sid)
+                        {
+                            if (data[x].Status == "Present") {
+                                ++pcount;
+                            }
+                            if (data[x].Status == "Absent") {
+                                ++acount;
+                            }
+                            if (data[x].Status == "Leave") {
+                                ++lcount;
+                            }
+                            txt += `<tr>
+                                        <td>${data[x].Status}</td><td>${data[x].Date}</td>
+                                    </tr>`;
+                        }
+                    }
+                    txt += `</tbody>
+                        </table>
+                            <div class="row p-2">
+                                <h5 style="border-right: 5px solid #2C3E50; box-shadow:rgb(128, 128, 128) 2px 3px 10px !important; border-radius:5px; width:15%; padding:1.5% 0 0 2%;">No. of Presents</h5>
+                                <span style="margin:2% 20%;">${pcount}</span>
+                            </div>
+                           <div class="row p-2">
+                                <h5 style="border-right: 5px solid #2C3E50; box-shadow:rgb(128, 128, 128) 2px 3px 10px !important; border-radius:5px; width:15%; padding:1.5% 0 0 2%;">No. of Absents</h5>
+                                <span style="margin:2% 20%;">${acount}</span>
+                            </div>
+                            <div class="row p-2">
+                                <h5 style="border-right: 5px solid #2C3E50; box-shadow:rgb(128, 128, 128) 2px 3px 10px !important; border-radius:5px; width:15%; padding:1.5% 0 0 2%;">No. of Leaves</h5>
+                                <span style="margin:2% 20%;">${lcount}</span>
+                            </div>`;
+                    $("#detail").append(txt);
+                }
+            }
+            xhr.send();
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="../../Scripts/bootstrap.min.js"></script>
+    <script src="../../Scripts/bootstrap.bundle.min.js"></script>
+</body>
+</html>

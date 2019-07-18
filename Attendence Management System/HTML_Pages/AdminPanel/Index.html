@@ -30,7 +30,7 @@
             </ul>
             <ul class="navbar-nav mr-0">
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Logout</a>
+                    <a href="#" id="lgoutBtn" class="nav-link">Logout</a>
                 </li>
             </ul>
         </div>
@@ -39,7 +39,24 @@
         <div class="row">
             <div class="card mt-5 w-100">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="card-title">Login Students</h5>
+                    <h5 class="card-title"><i class="fa fa-user-alt"></i> Login Students</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="stdData"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card mt-5 w-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title"><i class="fa fa-list"></i> Pending Leaves</h5>
                 </div>
                 <div class="card-body">
 
@@ -47,22 +64,123 @@
             </div>
             <div class="card mt-5 w-100">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="card-title">Pending Leaves</h5>
+                    <h5 class="card-title"><i class="fa fa-filter"></i>Student Attendence Detail</h5>
                 </div>
                 <div class="card-body">
+                    <span id="msg" style="color:red;"></span>
+                    <div class="row">
+                        <div class="col-md-4"><span>Student:</span><select class="custom-select" id="stdlist"></select></div>
+                        <div class="col-md-4"><span>From:</span> <input type="text" class="form-control" id="fromDate" placeholder="m/dd/yyyy" /></div>
+                        <div class="col-md-4"><span>To:</span> <input type="text" class="form-control" id="toDate" placeholder="m/dd/yyyy" /></div>
+                        <button id="searchBtn" class="btn btn-primary ml-auto mr-3 mt-3"><i class="fa fa-search"></i></button>
+                    </div>
+                    <div id="fltrOutput" class="list-group">
 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!--scripts-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../../Scripts/StringDate_to_numberDate.js"></script>
     <script>
-        var d = new Date;
-        d.getDate();
         $(document).ready(function () {
-            $("#dispDate").text(d);
+            var flag = localStorage.getItem("Admin");
+            if (flag != "true") {
+                window.location.assign("http://localhost:64749/Html_Pages/AdminPanel/Login.html");
+            }
+            getLoggedinStds();
+            getStudents();
+            $("#lgoutBtn").click(function () {
+                localStorage.removeItem("Admin");
+                window.location.assign("http://localhost:64749/Html_Pages/AdminPanel/Login.html");
+            });
+            $("#searchBtn").click(function () {
+                var slct = $("#stdlist").val();
+                var tDate = $("#toDate").val();
+                var fDate = $("#fromDate").val();
+                console.log("selected id : " + slct + " to_date : " + tDate + " from_Date : " + fDate);
+                if (slct != "" && tDate != "" && fDate != "") {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', 'http://localhost:64749/api/Attendences', 'true');
+                    xhr.onload = function () {
+                        if (this.status == '200') {
+                            var txt="";
+                            var data = JSON.parse(this.responseText);
+                            for (var x in data) {
+                                if (data[x].StudentId == slct) {
+                                    var d = DatetoNumber(data[x].Date);
+                                    var dTo = DatetoNumber(tDate);
+                                    var dFrom = DatetoNumber(fDate);
+                                    if (d[2] >= dFrom[2] && d[2] <= dTo[2]) {
+                                        console.log("year : " + d[2]);
+                                        if (d[0] >= dFrom[0] && d[0] <= dTo[0]) {
+                                            console.log("month : " + d[0]);
+                                            if (d[1] >= dFrom[1] && d[1] <= dTo[1]) {
+                                                console.log("day : " + d[1]);
+                                                txt += `<li class="list-group-item">${data[x].Status} ${data[x].Date}</li>`;
+                                            }
+                                        }
+                                    } else {
+                                        console.log("else : " + data[x].Date);
+                                    }
+                                }
+                            }
+                            if (txt == "")
+                            {
+                                txt = `<h3 class="ml-4 text-muted"><i class="fa fa-frown"></i> Sorry, No data from specific date</h3>`;
+                            }
+                            $("#fltrOutput").append(txt);
+                        }
+                    }
+                    xhr.send();
+                } else {
+                    console.log("please fill all fields");
+                    $("#msg").append('please fill up all fields!!');
+                }
+            });
         });
+        function getLoggedinStds() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://localhost:64749/api/Students', 'true');
+            xhr.onload = function () {
+                if (this.status == '200') {
+                    var txt;
+                    var data = JSON.parse(this.responseText);
+                    for (var x in data) {
+                        if (data[x].LoginFlag == true) {
+                            txt += `<tr><td>${data[x].Name}</td><td>${data[x].Email}</td><td> <a href="#" onclick="getDetail(${data[x].Id})" class="btn btn-outline-info"> <i class="fa fa-clipboard-list"></i> </a> </td></tr>`;
+                        }
+                    }
+                    $("#stdData").html(txt);
+                } else {
+                    console.log("Error : " + this.status);
+                }
+            }
+            xhr.send();
+        }
+        function getDetail(id) {
+            localStorage.setItem("UserDetail", JSON.stringify(id));
+            window.location.assign("http://localhost:64749/Html_Pages/AdminPanel/Details.html");
+        }
+        function getStudents() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://localhost:64749/api/Students', 'true');
+            xhr.onload = function () {
+                if (this.status == '200') {
+                    var data = JSON.parse(this.responseText);
+                    var txt;
+                    for (var x in data) {
+                        txt += `<option value="${data[x].Id}">${data[x].Name}</option>`;
+                    }
+                    $("#stdlist").append(txt);
+                } else {
+                    console.log("error in loading user data");
+                }
+            }
+            xhr.send();
+        }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="../../Scripts/bootstrap.min.js"></script>

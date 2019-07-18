@@ -14,7 +14,7 @@ namespace Attendence_Management_System.Controllers.api
 {
     public class AttendencesController : ApiController
     {
-        private AMSDbEntities db = new AMSDbEntities();
+        private AMSfinalDbEntities db = new AMSfinalDbEntities();
 
         // GET: api/Attendences
         public IQueryable<Attendence> GetAttendences()
