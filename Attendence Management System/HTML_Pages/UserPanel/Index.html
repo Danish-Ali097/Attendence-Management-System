@@ -90,6 +90,7 @@
                     if (this.status == '200' || this.status == '201') {
                         $("#msg").html("<div class='alert alert-info'> <i class='fa fa-info-circle'></i> Attendence Submitted</div>");
                         $("#msg").fadeIn();
+                        location.reload();
                     } else
                     {
                         $("#msg").html("<div class='alert alert-danger'> <strong>Error!</strong> Attendence not Submitted</div>");
@@ -108,6 +109,7 @@
                     if (this.status == '200' || this.status == '201') {
                         $("#msg").html("<div class='alert alert-info'> <i class='fa fa-info-circle'></i> Attendence Submitted</div>");
                         $("#msg").fadeIn();
+                        location.reload();
                     } else {
                         $("#msg").html("<div class='alert alert-danger'> <strong>Error!</strong> Attendence not Submitted</div>");
                         $("#msg").fadeIn();

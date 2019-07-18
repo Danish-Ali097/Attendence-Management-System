@@ -58,10 +58,10 @@
             xhr.open('GET', 'http://localhost:64749/api/Students', 'true');
             xhr.onload = function () {
                 if (this.status == '200') {
-                    var txt;
+                    var txt = " ";
                     var data = JSON.parse(this.responseText);
                     for (var x in data) {
-                        txt += `<div class="card">
+                        txt += `<div class="card mt-3">
                                     <div class="card-header bg-primary text-white">
                                         <h5 class="card-title">${data[x].Name}</h5>
                                     </div>
@@ -82,12 +82,11 @@
                                         <div class="attendDetails"></div>
                                     </div>
                                 </div>`;
-                        $("#allstdData").append(txt);
-                        console.log("apend call");
-                        console.log($("#allstdData"));
+                        //console.log("apend call");
+                        //console.log($("#allstdData"));
                         getAttendenceDetails(data[x].Id,x);
                     }
-                    console.log("apend call");
+                    $("#allstdData").append(txt);
                 } else {
                     console.log("Error : " + this.status);
                 }
@@ -96,7 +95,7 @@
         }
         function getAttendenceDetails(Sid,ind)
         {
-            console.log("get attendence function call");
+            console.log("get attendence function call, Id:"+Sid+", Index: "+ind);
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'http://localhost:64749/api/Attendences', 'true');
             xhr.onload = function () {
@@ -138,7 +137,7 @@
                         </table>
                     </div>
                 </div>`;
-                   console.log(txt);
+                   //console.log(txt);
                    $(txt).appendTo($(".attendDetails")[ind]);
                     }
                 }
