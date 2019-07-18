@@ -110,6 +110,7 @@
                 window.location.assign("http://localhost:64749/Html_Pages/AdminPanel/Login.html");
             }
             getLoggedinStds();
+            getPendingLeaves();
             getStudents();
             $("#lgoutBtn").click(function () {
                 localStorage.removeItem("Admin");
@@ -156,7 +157,7 @@
                     xhr.send();
                 } else {
                     console.log("please fill all fields");
-                    $("#msg").append('Please fill up all fields!');
+                    $("#msg").text('Please fill up all fields!');
                 }
             });
             $("#searchAtndBtn").click(function () {
@@ -166,7 +167,7 @@
                     window.location.assign("http://localhost:64749/Html_Pages/AdminPanel/ReportAll.html");
                 } else
                 {
-                    $("#msg1").append("Please fill up all fields!");
+                    $("#msg1").text("Please fill up all fields!");
                 }
             });
         });
@@ -210,6 +211,7 @@
             }
             xhr.send();
         }
+        function getPendingLeaves ()
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="../../Scripts/bootstrap.min.js"></script>

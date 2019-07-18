@@ -43,15 +43,15 @@
     <div class="container">
         <div class="row mt-5">
             <div class="col-md-5">
-                <img src="#" alt="Profile Image" id="profileimg" class="w-100 img-thumbnail" style="height:auto; width:100%" />
+                <img src="#" alt="Profile Image" id="profileimg" class="w-100 img-thumbnail" style="height:auto; width:100%" draggable="false" />
             </div>
             <div class="col-md-7">
                 <form>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="text" id="password" class="form-control" />
+                        <input type="text" id="password" class="form-control" maxlength="20" placeholder="New Password" title="New Password" />
                     </div>
-                    <button class="btn btn-primary">Change Password</button>
+                    <button class="btn btn-primary" id="chngePsdBtn">Change Password</button>
                 </form>
             </div>
         </div>
@@ -78,9 +78,25 @@
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xhr.send(str);
             });
-            
+            $("#chngePsdBtn").click(function (e) {
+                e.preventDefault();
+                var str = "Id=" + userData.Id + "&Name=" + userData.Name + "&Email=" + userData.Email + "&Password=" + $("#password").val() + "&ImagePath=" + userData.ImagePath + "&LoginFlag=" + userData.LoginFlag;
+                var xhr = new XMLHttpRequest();
+                xhr.open('PUT', 'http://localhost:64749/api/Students/' + userData.Id, 'true');
+                xhr.onload = function () {
+                    if (this.status == '201' || this.status == '200') {
+                        alert("password updated!");
+                    } else
+                    {
+                        alert("password update failed!, status text : " + this.statusText);
+                    }
+                }
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.send(str);
+            });
         });
         //GET: user
+        var userData;
         function getUser(id) {
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'http://localhost:64749/api/Students/' + id, 'true');

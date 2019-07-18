@@ -28,6 +28,7 @@
                     <a class="nav-link" href="#">About</a>
                 </li>
             </ul>
+            <img src="#" alt="usrprofile" id="profileimg" style="height:auto; width:50px; z-index:1; position:absolute; right:12%; border-radius:100%;" draggable="false" />
             <div class="btn-group mr-4" role="group" aria-label="Button group with nested dropdown">
                 <button type="button" class="btn btn-primary"><span id="usrname"></span></button>
                 <div class="btn-group" role="group">
@@ -180,6 +181,7 @@
                     userData = JSON.parse(this.responseText);
                     //console.log(userData);
                     $("#usrname").text(userData.Name);
+                    $("#profileimg").attr("src", userData.ImagePath);
                 }
             }
             xhr.send();
