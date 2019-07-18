@@ -79,6 +79,25 @@
                     </div>
                 </div>
             </div>
+            <div class="card mt-5 w-100 mb-2">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title"><i class="fa fa-clipboard-list"></i>Generate Report</h5>
+                </div>
+                <div class="card-body">
+                    <span id="msg1" style="color:red;"></span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span>From:</span>
+                            <input type="text" class="form-control" id="fDate" placeholder="m/dd/yyyy" />
+                        </div>
+                        <div class="col-md-6">
+                            <span>To:</span>
+                            <input type="text" class="form-control" id="tDate" placeholder="m/dd/yyyy" />
+                        </div>
+                        <button id="searchAtndBtn" class="btn btn-primary ml-auto mr-3 mt-3"><i class="fa fa-clipboard-list"></i></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!--scripts-->
@@ -137,7 +156,17 @@
                     xhr.send();
                 } else {
                     console.log("please fill all fields");
-                    $("#msg").append('please fill up all fields!!');
+                    $("#msg").append('Please fill up all fields!');
+                }
+            });
+            $("#searchAtndBtn").click(function () {
+                if ($("#fDate").val() != "" && $("#tDate").val() != "") {
+                    var obj = { "from": $("#fDate").val(), "to": $("#tDate").val() }
+                    sessionStorage.setItem("Date", JSON.stringify(obj));
+                    window.location.assign("http://localhost:64749/Html_Pages/AdminPanel/ReportAll.html");
+                } else
+                {
+                    $("#msg1").append("Please fill up all fields!");
                 }
             });
         });

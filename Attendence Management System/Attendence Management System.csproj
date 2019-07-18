@@ -1795,6 +1795,7 @@
     <Content Include="HTML_Pages\AdminPanel\Details.html" />
     <Content Include="HTML_Pages\AdminPanel\Index.html" />
     <Content Include="HTML_Pages\AdminPanel\Login.html" />
+    <Content Include="HTML_Pages\AdminPanel\ReportAll.html" />
     <Content Include="HTML_Pages\Home.html" />
     <Content Include="HTML_Pages\UserPanel\EditProfile.html" />
     <Content Include="HTML_Pages\UserPanel\Index.html" />
