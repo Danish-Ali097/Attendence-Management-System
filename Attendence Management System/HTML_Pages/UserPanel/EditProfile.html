@@ -43,7 +43,7 @@
     <div class="container">
         <div class="row mt-5">
             <div class="col-md-5">
-                <img src="#" alt="Profile Image" id="profileimg" class="w-100 img-thumbnail" style="height:10%; width:10%" />
+                <img src="#" alt="Profile Image" id="profileimg" class="w-100 img-thumbnail" style="height:auto; width:100%" />
             </div>
             <div class="col-md-7">
                 <form>
@@ -89,6 +89,7 @@
                     userData = JSON.parse(this.responseText);
                     //console.log(userData);
                     $("#usrname").text(userData.Name);
+                    $("#profileimg").attr("src", userData.ImagePath);
                 }
             }
             xhr.send();

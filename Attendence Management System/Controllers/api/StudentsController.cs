@@ -82,7 +82,7 @@ namespace Attendence_Management_System.Controllers.api
             { }
             else
             {
-                student.ImagePath = @"~\App_Content\Images\Default.png";
+                student.ImagePath = @"http://localhost:64749/App_Content/Images/Default.png";
             }
 
             db.Students.Add(student);
