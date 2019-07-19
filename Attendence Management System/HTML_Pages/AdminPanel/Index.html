@@ -74,8 +74,19 @@
                         <div class="col-md-4"><span>To:</span> <input type="text" class="form-control" id="toDate" placeholder="m/dd/yyyy" /></div>
                         <button id="searchBtn" class="btn btn-primary ml-auto mr-3 mt-3"><i class="fa fa-search"></i></button>
                     </div>
-                    <div id="fltrOutput" class="list-group">
+                    <div>
+                        <table class="table table-striped mt-1">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="fltrOutput" style="overflow:scroll;">
 
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -126,7 +137,8 @@
                     xhr.open('GET', 'http://localhost:64749/api/Attendences', 'true');
                     xhr.onload = function () {
                         if (this.status == '200') {
-                            var txt="";
+                            var txt = " ";
+                            $("#fltrOutput").text(txt);
                             var data = JSON.parse(this.responseText);
                             for (var x in data) {
                                 if (data[x].StudentId == slct) {
@@ -139,7 +151,7 @@
                                             console.log("month : " + d[0]);
                                             if (d[1] >= dFrom[1] && d[1] <= dTo[1]) {
                                                 console.log("day : " + d[1]);
-                                                txt += `<li class="list-group-item">${data[x].Status} ${data[x].Date}</li>`;
+                                                txt += `<tr><td>${data[x].Status}</td> <td>${data[x].Date}</td><td> <a class="btn btn-info" href="#"><i class="fa fa-pen"></i></a> <a class="btn btn-danger" href="#"><i class="fa fa-trash"></i><a/> </td></tr>`;
                                             }
                                         }
                                     } else {
@@ -211,7 +223,7 @@
             }
             xhr.send();
         }
-        function getPendingLeaves ()
+        function getPendingLeaves() { }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="../../Scripts/bootstrap.min.js"></script>

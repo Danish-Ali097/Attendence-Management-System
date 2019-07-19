@@ -8,6 +8,27 @@
     <link href="../../fonts/fontawesome-free-5.8.1-web/css/all.min.css" rel="stylesheet" />
     <link href="../../Content/Site.css" rel="stylesheet" />
     <title>Edit Profile | UserPanel</title>
+    <style>
+        #proImgBtn {
+            width: 92%;
+            height: 98%;
+            border-radius:100%;
+            background-color: rgba(0,0,0,0.5);
+            position: absolute;
+            z-index: 1;
+            top:1%;
+            left:4%;
+            display:none;
+            padding-top:48%;
+        }
+            #proImgBtn > h6:hover, #proImgBtn > h6:focus {
+                color: ghostwhite;
+                cursor:pointer;
+            }
+        #profileimg:hover + #proImgBtn, #profileimg + #proImgBtn:hover {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div id="header">
@@ -43,7 +64,8 @@
     <div class="container">
         <div class="row mt-5">
             <div class="col-md-5">
-                <img src="#" alt="Profile Image" id="profileimg" class="w-100 img-thumbnail" style="height:auto; width:100%" draggable="false" />
+                <img src="#" alt="Profile Image" id="profileimg" class="w-100 img-thumbnail" style="height:auto; width:100%; border-radius:100%;" draggable="false" />
+                <div id="proImgBtn" class="text-black-50 text-center"> <h6><i class="fa fa-camera"></i> upload image</h6> </div>
             </div>
             <div class="col-md-7">
                 <form>
@@ -60,6 +82,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
+            $("#proImgBtn > h6").click(function () {
+                var elem = $(document.createElement("input"));
+                elem.attr("type", "file");
+                elem.attr("accept", "image/png,image/jpg,image/jpeg");
+                elem.trigger("click");
+            });
             getUser(localStorage.getItem("User"));
             $("#lgoutBtn").click(function (e) {
                 e.preventDefault();
