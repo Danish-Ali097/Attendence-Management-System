@@ -42,36 +42,43 @@
         <div id="msg" class="mt-2" style="display:none;">
 
         </div>
-        <div class="card" id="reg-form">
-            <div class="card-header bg-primary text-white">
-                <h5 class="card-title">SignUp</h5>
-            </div>
-            <div class="card-body">
-                <form id="SignForm">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input class="form-control" id="name" type="text" />
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card" id="reg-form">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title">SignUp</h5>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input class="form-control" id="email" type="email" />
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input class="form-control" id="password" type="password" />
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="File" accept="image/png,image/jpeg,image/jpg">
-                                <label class="custom-file-label" for="File">Choose image</label>
+                    <div class="card-body">
+                        <form id="SignForm">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input class="form-control" id="name" type="text" />
                             </div>
-                        </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input class="form-control" id="email" type="email" />
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input class="form-control" id="password" type="password" />
+                            </div>
+                            <div class="form-group">
+                                <label for="File">Image</label>
+                                <input class="form-control-file" id="File" type="File" accept="image/jpeg" />
+                            </div>
+                            <button class="btn btn-primary" id="sgnBtn" disabled>SignUp</button>
+                        </form>
                     </div>
-                    <button class="btn btn-primary" id="sgnBtn">SignUp</button>
-                </form>
+                </div>
+                </div>
+            <div class="col-md-3" id="imgcontainer" style="display:none; padding-top:5%;">
+                <img  class="img-thumbnail" id="selectedimg" />
+                <button class="btn btn-light" id="upldimg">Upload</button><span id="descImg"></span>
+                <div class="bg-success" id="result">
+
+                </div>
             </div>
-        </div>
+         </div>
     </div>
     <!--scripts-->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>
@@ -79,19 +86,51 @@
     <script src="../../Scripts/bootstrap.bundle.min.js"></script>
     <!--userScripts-->
     <script>
-        var image64 = "";
+        var imgpath = "";
         $(document).ready(function () {
             $("#File").change(function () {
+                var file = this.files[0];
                 var reader = new FileReader();
-                reader.readAsDataURL(document.getElementById('File').files[0]);
-                reader.onloadend = function (e)
-                {
-                    image64 = e.target.result;
+                reader.readAsDataURL(file);
+                reader.onload = function (e) {
+                    var size;
+                    var height;
+                    var width;
+                    var f = new Image;
+                    f.src = e.target.result;
+                    f.onload = function () {
+                        height = f.height;
+                        width = f.width;
+                        size = Math.round(f.size / 1024);
+                        $("#descImg").text("Size : " + size + " Height : " + height + " Width : " + width);
+                    }
+                    $("#selectedimg").attr("src", e.target.result);
+                    $("#imgcontainer").show();
                 }
+                $("#selectedimg").attr("src");
+                $("#imgcontainer").show();
+            });
+            $("#upldimg").click(function () {
+                var file = $("#File").get(0).files;
+                var data = new FormData;
+                data.append("ImageFile", file[0]);
+                data.append("PathtoSave", "/App_Content/Images/");
+                $.ajax({
+                    type: "Post",
+                    url: "/Test/ImageUpload",
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        $("#result").append("image uploaded" + response);
+                        $("#sgnBtn").removeAttr("disabled");
+                        imgpath = "http://localhost:64749/App_Content/Images/" + response;
+                    }
+                });
             });
             $("#SignForm").submit(function (e) { e.preventDefault(); })
             $("#sgnBtn").click(function () {
-                var data = "Name=" + $("#name").val() + "&Email=" + $("#email").val() + "&Password=" + $("#password").val() + "&ImagePath=" + image64;
+                var data = "Name=" + $("#name").val() + "&Email=" + $("#email").val() + "&Password=" + $("#password").val() + "&ImagePath=" + imgpath;
                 console.log(data);
                 var http = new XMLHttpRequest();
                 http.open('POST', 'http://localhost:64749/api/Students', 'true');

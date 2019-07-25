@@ -177,6 +177,7 @@
     <Compile Include="Controllers\api\AdminsController.cs" />
     <Compile Include="Controllers\api\AttendencesController.cs" />
     <Compile Include="Controllers\api\StudentsController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -201,6 +202,7 @@
     <Compile Include="Models\Attendence.cs">
       <DependentUpon>AMSModelFinal.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ImageUploadModel.cs" />
     <Compile Include="Models\Student.cs">
       <DependentUpon>AMSModelFinal.tt</DependentUpon>
     </Compile>
@@ -1831,6 +1833,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\fontawesome-free-5.8.1-web\less\brands.less" />

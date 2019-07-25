@@ -85,7 +85,9 @@
             $("#proImgBtn > h6").click(function () {
                 var elem = $(document.createElement("input"));
                 elem.attr("type", "file");
+                elem.attr("id", "file");
                 elem.attr("accept", "image/png,image/jpg,image/jpeg");
+                elem.attr("onchange","uploadImg("+userData.Id+")");
                 elem.trigger("click");
             });
             getUser(localStorage.getItem("User"));
@@ -137,6 +139,17 @@
                 }
             }
             xhr.send();
+        }
+        function uploadImg( sdtid ) {
+            var file = $("#file").get(0).files;
+            var str = "StudentId=" + stdid + "&ImageFile=" + file;
+            $.ajax({
+                method: "/Controllers/api/Students/PostImage",
+                contentType: none,
+                data: str,
+                success: function () { },
+                error: function () { }
+            });
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

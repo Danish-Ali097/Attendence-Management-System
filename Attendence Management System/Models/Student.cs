@@ -11,7 +11,9 @@ namespace Attendence_Management_System.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Web;
+
     public partial class Student
     {
         public int Id { get; set; }

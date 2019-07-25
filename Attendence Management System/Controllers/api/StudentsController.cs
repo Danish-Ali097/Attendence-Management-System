@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Attendence_Management_System.Models;
-
 namespace Attendence_Management_System.Controllers.api
 {
     public class StudentsController : ApiController
@@ -69,22 +65,19 @@ namespace Attendence_Management_System.Controllers.api
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-
         // POST: api/Students
         [ResponseType(typeof(Student))]
         public IHttpActionResult PostStudent(Student student)
         {
+            if (student.ImagePath == null)
+            {
+                student.ImagePath = @"http://localhost:64749/App_Content/Images/Default.png";
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if(student.ImagePath != null)
-            { }
-            else
-            {
-                student.ImagePath = @"http://localhost:64749/App_Content/Images/Default.png";
-            }
-
+            
             db.Students.Add(student);
             db.SaveChanges();
 
@@ -100,7 +93,6 @@ namespace Attendence_Management_System.Controllers.api
             {
                 return NotFound();
             }
-
             db.Students.Remove(student);
             db.SaveChanges();
 
